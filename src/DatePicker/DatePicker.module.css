@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     width: 20%;
-    height: 50%;
 }
 .input {
     background-color: cornflowerblue;
@@ -11,6 +10,20 @@
     border-radius: 10px;
 }
 .modal {
-    background-color: burlywood;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.choose_day {
+    display: flex;
+    flex-wrap: wrap;
+}
+.day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 44px;
+    height: 50px;
+    background-color: burlywood;
+    margin: 5px;
 }
