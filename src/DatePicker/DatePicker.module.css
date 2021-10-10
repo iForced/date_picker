@@ -1,0 +1,16 @@
+.picker {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 50%;
+}
+.input {
+    background-color: cornflowerblue;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+}
+.modal {
+    background-color: burlywood;
+    height: 100%;
+}
