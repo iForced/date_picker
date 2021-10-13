@@ -1,77 +1,77 @@
-import React, {useReducer, useState} from 'react';
+import React, {useReducer, MouseEvent, ChangeEvent} from 'react';
 import s from './DatePicker.module.css'
-import {dateReducer, initialState, setDay, setMonth, setYear} from "../state/dateReducer";
+import {dateReducer, days, initialState, setDay, setMonth, setYear} from "../state/dateReducer";
 
 const DatePicker = () => {
 
-    const [showModal, setShowModal] = useState<boolean>(true)
-    const [date, dispatch] = useReducer(dateReducer, initialState)
+        const [date, dispatch] = useReducer(dateReducer, initialState)
 
-    const days = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
-    const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-    const years = [2019, 2020, 2021, 2022]
+        const daysInMonth = function () {
+            return 33 - new Date(date.year, date.month, 34).getDate();
+        }
+        const nameOfFirstDay = new Date(date.year, date.month, 0).getDay()
+        const daysCount = []
+        for (let i = 0; i <= daysInMonth() + nameOfFirstDay; i++) {
+            i < nameOfFirstDay ? daysCount.push(-1) : daysCount.push(i - nameOfFirstDay + 1)
+        }
 
-
-    return (
-        <div className={s.picker}>
-            <input
-                onChange={() => {}}
-                type="text"
-                className={s.input}
-                onClick={() => setShowModal(!showModal)}
-                value={`${date.day && date.day < 10 ? '0' + date.day : date.day}.${date.month && date.month < 10 ? '0' + date.month : date.month}.${date.year} ${date.name}`}
-            />
-            {
-                showModal &&
-                <div className={s.modal}>
-                    <div className={s.choose_year}>
-                        <select
-                            name="year"
-                            onChange={(e) => dispatch(setYear(+e.currentTarget.value))}
-                            value={'' + date.year}
-                        >
-                            {
-                                years.map(year =>
-                                    <option
-                                        key={year + Math.random()}
-                                        value={year}
-                                    >{year}
-                                    </option>)
-                            }
-                        </select>
-                    </div>
-                    <div className={s.choose_month}>
-                        <select
-                            name="month"
-                            onChange={(e) => dispatch(setMonth(+e.currentTarget.value))}
-                            value={'' + date.month}
-                        >
-                            {
-                                months.map(month =>
-                                    <option
-                                        key={month + Math.random()}
-                                        value={month}
-                                    >{month}
-                                    </option>)
-                            }
-                        </select>
-                    </div>
-                    <div className={s.choose_day}>
-                        {
-                            days.map(day =>
-                                <div
-                                    key={day + Math.random()}
-                                    className={s.day}
-                                    onClick={(e) => dispatch(setDay(+e.currentTarget.innerText))}
-                                >{day}
-                                </div>
-                            )
-                        }
-                    </div>
-                </div>
+        const onSetDay = (e: MouseEvent<HTMLDivElement>) => {
+            if (+e.currentTarget.innerText !== 0) {
+                dispatch(setDay(+e.currentTarget.innerText))
             }
-        </div>
-    );
-};
+        }
+        const onSetMonth = (e: ChangeEvent<HTMLSelectElement>) => {
+            dispatch(setMonth(+e.currentTarget.value))
+        }
+        const onSetYear = (e: ChangeEvent<HTMLInputElement>) => {
+            dispatch(setYear(+e.currentTarget.value))
+        }
+
+        return (
+            <div className={s.picker}>
+                <div>{`${date.day < 10 ? '0' + date.day : date.day} . ${date.month + 1 < 10 ? '0' + (date.month + 1) : date.month + 1} . ${date.year}`}</div>
+                <div className={s.choose_year}>
+                    <input
+                        type="number"
+                        onChange={onSetYear}
+                        value={'' + date.year}
+                        min={0}
+                        max={9999}
+                    />
+                </div>
+                <div className={s.choose_month}>
+                    <select
+                        onChange={onSetMonth}
+                        value={date.month + 1}
+                    >
+                        <option value="1">Jan</option>
+                        <option value="2">Feb</option>
+                        <option value="3">Mar</option>
+                        <option value="4">Apr</option>
+                        <option value="5">May</option>
+                        <option value="6">Jun</option>
+                        <option value="7">Jul</option>
+                        <option value="8">Aug</option>
+                        <option value="9">Sep</option>
+                        <option value="10">Oct</option>
+                        <option value="11">Nov</option>
+                        <option value="12">Dec</option>
+                    </select>
+                </div>
+                <div className={s.choose_day}>
+                    {days.map(d => <div className={s.day + ' ' + s.names}>{d}</div>)}
+                    {daysCount.map(el =>
+                        <div
+                            key={Math.random()}
+                            className={s.day}
+                            onClick={onSetDay}
+                        >{el < 0 ? '' : el}
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    }
+;
 
 export default DatePicker;

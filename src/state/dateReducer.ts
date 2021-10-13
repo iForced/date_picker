@@ -6,22 +6,28 @@ enum Actions {
 }
 
 type InitialStateType = {
-    day: null | number
-    month: null | number
-    year: null | number
-    name: null | string
+    day: number
+    month: number
+    year: number
+    name: string
 }
 type SetDayActionType = ReturnType<typeof setDay>
 type SetMonthActionType = ReturnType<typeof setMonth>
 type SetYearActionType = ReturnType<typeof setYear>
 type SetNameActionType = ReturnType<typeof setName>
-type ActionsType = SetDayActionType | SetMonthActionType | SetYearActionType | SetNameActionType
+type ActionsType =
+    SetDayActionType
+    | SetMonthActionType
+    | SetYearActionType
+    | SetNameActionType
 
+const now = new Date()
+export const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] //not use
 export const initialState: InitialStateType = {
-    day: null,
-    month: null,
-    year: null,
-    name: null
+    day: now.getDate(),
+    month: now.getMonth(),
+    year: now.getFullYear(),
+    name: days[now.getDay() - 1] //not use
 }
 
 export const dateReducer = (state: InitialStateType, action: ActionsType): InitialStateType => {
@@ -30,13 +36,10 @@ export const dateReducer = (state: InitialStateType, action: ActionsType): Initi
             return {...state, day: action.day}
 
         case Actions.SET_MONTH:
-            return {...state, month: action.month}
+            return {...state, month: action.month - 1, day: 1}
 
         case Actions.SET_YEAR:
             return {...state, year: action.year}
-
-        case Actions.SET_NAME:
-            return {...state, name: action.name}
 
         default:
             return state

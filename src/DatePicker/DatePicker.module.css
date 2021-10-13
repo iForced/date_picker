@@ -2,17 +2,13 @@
     display: flex;
     flex-direction: column;
     width: 20%;
+    height: 465px;
 }
 .input {
     background-color: cornflowerblue;
     border: none;
     padding: 10px;
     border-radius: 10px;
-}
-.modal {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
 }
 .choose_day {
     display: flex;
@@ -26,4 +22,11 @@
     height: 50px;
     background-color: burlywood;
     margin: 5px;
+}
+.day.names {
+    background-color: #ff9719;
+}
+.day.active {
+    font-weight: bold;
+    background-color: #de9948;
 }
